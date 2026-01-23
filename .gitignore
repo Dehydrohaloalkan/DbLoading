@@ -1,0 +1,102 @@
+## .NET
+bin/
+obj/
+*.user
+*.suo
+*.cache
+*.dll
+*.exe
+*.pdb
+*.log
+*.vs/
+.vs/
+*.userosscache
+*.sln.docstates
+[Dd]ebug/
+[Rr]elease/
+x64/
+x86/
+[Bb]uild/
+[Bb]uilds/
+*.csproj.user
+*.csproj.vspscc
+*.csproj.userosscache
+*.nuget.props
+*.nuget.targets
+project.lock.json
+project.fragment.lock.json
+artifacts/
+*.nupkg
+*.snupkg
+*.pdb
+*.cache
+dotnet-tools.json
+!dotnet-tools.json
+
+## Angular / Node
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+.pnpm-debug.log*
+
+# Angular
+.angular/
+dist/
+tmp/
+out-tsc/
+*.tsbuildinfo
+*.log
+
+# IDEs and editors
+.idea/
+.vscode/
+.cursor/
+*.swp
+*.swo
+*~
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sw?
+!DbLoading.sln
+
+# Environment
+.env
+.env.local
+.env.*.local
+*.env
+
+# Testing
+coverage/
+.nyc_output/
+*.lcov
+
+# Build outputs
+*.js.map
+*.d.ts.map
+
+# OS
+Thumbs.db
+.DS_Store
+Desktop.ini
+
+# Secrets and sensitive data
+appsettings.Development.json
+appsettings.Production.json
+*.pfx
+*.key
+*.cert
+secrets.json
+
+# Logs
+logs/
+*.log
+
+# Temporary files
+*.tmp
+*.temp
+*.bak
+*.cache

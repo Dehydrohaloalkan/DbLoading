@@ -1,0 +1,6 @@
+@DbLoading.Server_HostAddress = http://localhost:5068
+
+GET {{DbLoading.Server_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

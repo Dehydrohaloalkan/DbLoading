@@ -1,0 +1,254 @@
+{
+  "groups": [
+    {
+      "id": "g-sales",
+      "displayName": "Sales",
+      "scripts": [
+        {
+          "id": "s-orders",
+          "displayName": "Orders export",
+          "executionLane": 0,
+          "variants": [
+            { "id": "v1", "sqlFile": "orders_v1.sql" },
+            { "id": "v2", "sqlFile": "orders_v2.sql" },
+            { "id": "v3", "sqlFile": "orders_v3.sql" }
+          ],
+          "columnsProfileId": "orders_cols"
+        },
+        {
+          "id": "s-invoices",
+          "displayName": "Invoices export",
+          "executionLane": 1,
+          "variants": [
+            { "id": "v1", "sqlFile": "invoices_v1.sql" },
+            { "id": "v2", "sqlFile": "invoices_v2.sql" },
+            { "id": "v3", "sqlFile": "invoices_v3.sql" }
+          ],
+          "columnsProfileId": "invoices_cols"
+        },
+        {
+          "id": "s-payments",
+          "displayName": "Payments export",
+          "executionLane": 2,
+          "variants": [
+            { "id": "v1", "sqlFile": "payments_v1.sql" },
+            { "id": "v2", "sqlFile": "payments_v2.sql" },
+            { "id": "v3", "sqlFile": "payments_v3.sql" }
+          ],
+          "columnsProfileId": "payments_cols"
+        },
+        {
+          "id": "s-revenue",
+          "displayName": "Revenue export",
+          "executionLane": 0,
+          "variants": [
+            { "id": "v1", "sqlFile": "revenue_v1.sql" },
+            { "id": "v2", "sqlFile": "revenue_v2.sql" },
+            { "id": "v3", "sqlFile": "revenue_v3.sql" }
+          ],
+          "columnsProfileId": "revenue_cols"
+        }
+      ]
+    },
+    {
+      "id": "g-inventory",
+      "displayName": "Inventory",
+      "scripts": [
+        {
+          "id": "s-stock",
+          "displayName": "Stock levels",
+          "executionLane": 1,
+          "variants": [
+            { "id": "v1", "sqlFile": "stock_v1.sql" },
+            { "id": "v2", "sqlFile": "stock_v2.sql" },
+            { "id": "v3", "sqlFile": "stock_v3.sql" }
+          ],
+          "columnsProfileId": "stock_cols"
+        },
+        {
+          "id": "s-movements",
+          "displayName": "Stock movements",
+          "executionLane": 2,
+          "variants": [
+            { "id": "v1", "sqlFile": "movements_v1.sql" },
+            { "id": "v2", "sqlFile": "movements_v2.sql" },
+            { "id": "v3", "sqlFile": "movements_v3.sql" }
+          ],
+          "columnsProfileId": "movements_cols"
+        },
+        {
+          "id": "s-warehouses",
+          "displayName": "Warehouses",
+          "executionLane": 0,
+          "variants": [
+            { "id": "v1", "sqlFile": "warehouses_v1.sql" },
+            { "id": "v2", "sqlFile": "warehouses_v2.sql" },
+            { "id": "v3", "sqlFile": "warehouses_v3.sql" }
+          ],
+          "columnsProfileId": "warehouses_cols"
+        },
+        {
+          "id": "s-transfers",
+          "displayName": "Transfers",
+          "executionLane": 1,
+          "variants": [
+            { "id": "v1", "sqlFile": "transfers_v1.sql" },
+            { "id": "v2", "sqlFile": "transfers_v2.sql" },
+            { "id": "v3", "sqlFile": "transfers_v3.sql" }
+          ],
+          "columnsProfileId": "transfers_cols"
+        }
+      ]
+    },
+    {
+      "id": "g-customers",
+      "displayName": "Customers",
+      "scripts": [
+        {
+          "id": "s-customer-list",
+          "displayName": "Customer list",
+          "executionLane": 2,
+          "variants": [
+            { "id": "v1", "sqlFile": "customer_list_v1.sql" },
+            { "id": "v2", "sqlFile": "customer_list_v2.sql" },
+            { "id": "v3", "sqlFile": "customer_list_v3.sql" }
+          ],
+          "columnsProfileId": "customer_list_cols"
+        },
+        {
+          "id": "s-customer-activity",
+          "displayName": "Customer activity",
+          "executionLane": 0,
+          "variants": [
+            { "id": "v1", "sqlFile": "customer_activity_v1.sql" },
+            { "id": "v2", "sqlFile": "customer_activity_v2.sql" },
+            { "id": "v3", "sqlFile": "customer_activity_v3.sql" }
+          ],
+          "columnsProfileId": "customer_activity_cols"
+        },
+        {
+          "id": "s-customer-orders",
+          "displayName": "Customer orders",
+          "executionLane": 1,
+          "variants": [
+            { "id": "v1", "sqlFile": "customer_orders_v1.sql" },
+            { "id": "v2", "sqlFile": "customer_orders_v2.sql" },
+            { "id": "v3", "sqlFile": "customer_orders_v3.sql" }
+          ],
+          "columnsProfileId": "customer_orders_cols"
+        },
+        {
+          "id": "s-customer-segments",
+          "displayName": "Customer segments",
+          "executionLane": 2,
+          "variants": [
+            { "id": "v1", "sqlFile": "customer_segments_v1.sql" },
+            { "id": "v2", "sqlFile": "customer_segments_v2.sql" },
+            { "id": "v3", "sqlFile": "customer_segments_v3.sql" }
+          ],
+          "columnsProfileId": "customer_segments_cols"
+        }
+      ]
+    },
+    {
+      "id": "g-products",
+      "displayName": "Products",
+      "scripts": [
+        {
+          "id": "s-product-catalog",
+          "displayName": "Product catalog",
+          "executionLane": 0,
+          "variants": [
+            { "id": "v1", "sqlFile": "product_catalog_v1.sql" },
+            { "id": "v2", "sqlFile": "product_catalog_v2.sql" },
+            { "id": "v3", "sqlFile": "product_catalog_v3.sql" }
+          ],
+          "columnsProfileId": "product_catalog_cols"
+        },
+        {
+          "id": "s-product-prices",
+          "displayName": "Product prices",
+          "executionLane": 1,
+          "variants": [
+            { "id": "v1", "sqlFile": "product_prices_v1.sql" },
+            { "id": "v2", "sqlFile": "product_prices_v2.sql" },
+            { "id": "v3", "sqlFile": "product_prices_v3.sql" }
+          ],
+          "columnsProfileId": "product_prices_cols"
+        },
+        {
+          "id": "s-product-categories",
+          "displayName": "Product categories",
+          "executionLane": 2,
+          "variants": [
+            { "id": "v1", "sqlFile": "product_categories_v1.sql" },
+            { "id": "v2", "sqlFile": "product_categories_v2.sql" },
+            { "id": "v3", "sqlFile": "product_categories_v3.sql" }
+          ],
+          "columnsProfileId": "product_categories_cols"
+        },
+        {
+          "id": "s-product-sales",
+          "displayName": "Product sales",
+          "executionLane": 0,
+          "variants": [
+            { "id": "v1", "sqlFile": "product_sales_v1.sql" },
+            { "id": "v2", "sqlFile": "product_sales_v2.sql" },
+            { "id": "v3", "sqlFile": "product_sales_v3.sql" }
+          ],
+          "columnsProfileId": "product_sales_cols"
+        }
+      ]
+    },
+    {
+      "id": "g-reports",
+      "displayName": "Reports",
+      "scripts": [
+        {
+          "id": "s-daily-summary",
+          "displayName": "Daily summary",
+          "executionLane": 1,
+          "variants": [
+            { "id": "v1", "sqlFile": "daily_summary_v1.sql" },
+            { "id": "v2", "sqlFile": "daily_summary_v2.sql" },
+            { "id": "v3", "sqlFile": "daily_summary_v3.sql" }
+          ],
+          "columnsProfileId": "daily_summary_cols"
+        },
+        {
+          "id": "s-monthly-report",
+          "displayName": "Monthly report",
+          "executionLane": 2,
+          "variants": [
+            { "id": "v1", "sqlFile": "monthly_report_v1.sql" },
+            { "id": "v2", "sqlFile": "monthly_report_v2.sql" },
+            { "id": "v3", "sqlFile": "monthly_report_v3.sql" }
+          ],
+          "columnsProfileId": "monthly_report_cols"
+        },
+        {
+          "id": "s-performance",
+          "displayName": "Performance metrics",
+          "executionLane": 0,
+          "variants": [
+            { "id": "v1", "sqlFile": "performance_v1.sql" },
+            { "id": "v2", "sqlFile": "performance_v2.sql" },
+            { "id": "v3", "sqlFile": "performance_v3.sql" }
+          ],
+          "columnsProfileId": "performance_cols"
+        },
+        {
+          "id": "s-analytics",
+          "displayName": "Analytics data",
+          "executionLane": 1,
+          "variants": [
+            { "id": "v1", "sqlFile": "analytics_v1.sql" },
+            { "id": "v2", "sqlFile": "analytics_v2.sql" },
+            { "id": "v3", "sqlFile": "analytics_v3.sql" }
+          ],
+          "columnsProfileId": "analytics_cols"
+        }
+      ]
+    }
+  ]
+}

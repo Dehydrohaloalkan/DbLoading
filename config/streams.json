@@ -1,0 +1,8 @@
+{
+  "managers": [
+    { "id": "m1", "displayName": "Manager 1" }
+  ],
+  "streams": [
+    { "id": "s1", "displayName": "Stream 1" }
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "output": {
+    "rootPath": "./output",
+    "scriptsRoot": "scripts",
+    "encoding": "utf-8",
+    "maxFileBytes": 10485760,
+    "cleanupPolicy": "BeforeRunIfPreviousSucceeded",
+    "allowOversizeSingleLine": false
+  },
+  "execution": {
+    "laneCount": 3
+  },
+  "realtime": {
+    "signalrEnabled": true
+  },
+  "auth": {
+    "accessTokenMinutes": 20,
+    "refreshTokenHours": 4,
+    "refreshCookieName": "dbloading_rt"
+  }
+}

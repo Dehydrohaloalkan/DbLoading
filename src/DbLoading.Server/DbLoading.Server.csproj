@@ -8,12 +8,20 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="10.0.2" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="10.0.2" />
+    <PackageReference Include="NLog.Web.AspNetCore" Version="5.3.4" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\DbLoading.Application\DbLoading.Application.csproj" />
     <ProjectReference Include="..\DbLoading.Domain\DbLoading.Domain.csproj" />
     <ProjectReference Include="..\DbLoading.Infrastructure\DbLoading.Infrastructure.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Update="nlog.config">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 
 </Project>

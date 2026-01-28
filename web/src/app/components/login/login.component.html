@@ -1,0 +1,106 @@
+<div class="login-container">
+  <p-card styleClass="login-card" [header]="'Вход в систему'">
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+      <div class="form-field">
+        <label for="dbUsername">DB Username</label>
+        <input
+          id="dbUsername"
+          type="text"
+          pInputText
+          formControlName="dbUsername"
+          [disabled]="isLoading()"
+          placeholder="Введите имя пользователя"
+        />
+        @if (loginForm.get('dbUsername')?.invalid && loginForm.get('dbUsername')?.touched) {
+          <small class="error-text">Обязательное поле</small>
+        }
+      </div>
+
+      <div class="form-field">
+        <label for="dbPassword">DB Password</label>
+        <p-password
+          id="dbPassword"
+          formControlName="dbPassword"
+          [disabled]="isLoading()"
+          [feedback]="false"
+          [toggleMask]="true"
+          placeholder="Введите пароль"
+          styleClass="full-width"
+        />
+        @if (loginForm.get('dbPassword')?.invalid && loginForm.get('dbPassword')?.touched) {
+          <small class="error-text">Обязательное поле</small>
+        }
+      </div>
+
+      <div class="form-field">
+        <label for="databaseId">Database</label>
+        <p-select
+          inputId="databaseId"
+          formControlName="databaseId"
+          [options]="databases()"
+          optionLabel="displayName"
+          optionValue="id"
+          [disabled]="isLoading()"
+          placeholder="Выберите базу данных"
+          styleClass="full-width"
+          [showClear]="true"
+        />
+        @if (loginForm.get('databaseId')?.invalid && loginForm.get('databaseId')?.touched) {
+          <small class="error-text">Обязательное поле</small>
+        }
+      </div>
+
+      <div class="form-field">
+        <label for="managerId">Manager</label>
+        <p-select
+          inputId="managerId"
+          formControlName="managerId"
+          [options]="managers()"
+          optionLabel="displayName"
+          optionValue="id"
+          [disabled]="isLoading()"
+          placeholder="Выберите менеджера"
+          styleClass="full-width"
+          [showClear]="true"
+        />
+        @if (loginForm.get('managerId')?.invalid && loginForm.get('managerId')?.touched) {
+          <small class="error-text">Обязательное поле</small>
+        }
+      </div>
+
+      <div class="form-field">
+        <label for="streamId">Stream</label>
+        <p-select
+          inputId="streamId"
+          formControlName="streamId"
+          [options]="streams()"
+          optionLabel="displayName"
+          optionValue="id"
+          [disabled]="isLoading()"
+          placeholder="Выберите поток"
+          styleClass="full-width"
+          [showClear]="true"
+        />
+        @if (loginForm.get('streamId')?.invalid && loginForm.get('streamId')?.touched) {
+          <small class="error-text">Обязательное поле</small>
+        }
+      </div>
+
+      @if (errorMessage()) {
+        <div class="error-message">
+          {{ errorMessage() }}
+        </div>
+      }
+
+      <div class="form-actions">
+        <p-button
+          type="submit"
+          label="Войти"
+          [loading]="isLoading()"
+          [disabled]="loginForm.invalid || isLoading()"
+          styleClass="full-width"
+        />
+      </div>
+    </form>
+  </p-card>
+</div>

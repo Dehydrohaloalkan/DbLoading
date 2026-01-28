@@ -1,6 +1,49 @@
 @DbLoading.Server_HostAddress = http://localhost:5068
+@accessToken = your_access_token_here
 
-GET {{DbLoading.Server_HostAddress}}/weatherforecast/
-Accept: application/json
+### Login (get token first)
+POST {{DbLoading.Server_HostAddress}}/api/auth/login
+Content-Type: application/json
+
+{
+  "dbUsername": "USER1",
+  "dbPassword": "password",
+  "databaseId": "db-test",
+  "managerId": "m1",
+  "streamId": "s1"
+}
+
+### Start Run (requires authentication)
+POST {{DbLoading.Server_HostAddress}}/api/runs
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+  "mode": "AllGroups",
+  "selection": {
+    "groups": [
+      {
+        "groupId": "g-sales",
+        "enabled": true,
+        "scripts": [
+          {
+            "scriptId": "s-orders",
+            "enabled": true,
+            "exportMode": "CustomColumns",
+            "selectedColumnItemIds": ["order_id", "customer"]
+          }
+        ]
+      }
+    ]
+  }
+}
+
+### Get Run Status
+GET {{DbLoading.Server_HostAddress}}/api/runs/{runId}
+Authorization: Bearer {{accessToken}}
+
+### Cancel Run
+POST {{DbLoading.Server_HostAddress}}/api/runs/{runId}/cancel
+Authorization: Bearer {{accessToken}}
 
 ###

@@ -30,17 +30,19 @@
 - SignalR hub `hubs/runs`:
   - `run.updated`, `group.updated`, `script.updated`
 
-## Итерация 4 — Файловая выгрузка и нарезка 10 MiB
+## Итерация 4 — Файловая выгрузка и нарезка 10 MiB ✅
 
 - Реализация writer/slicer по правилам (строка не рвётся, файл не >10 MiB).
 - Структура папок `OutputRoot/<runId>/<group>/<script>/<variant>/part-XXXX.txt`.
 - Cleanup policy “before run if previous succeeded”.
+- Реализовано: `IOutputWriter`/`FileSlicerWriter`, `OutputCleanup`, интеграция в `RunService`.
 
-## Итерация 5 — SQL modification (SELECT "LineFile" → custom)
+## Итерация 5 — SQL modification (SELECT "LineFile" → custom) ✅
 
 - Реализовать парсер/замену SELECT‑списка (по описанным допущениям).
 - Реализовать сборку выражения склейки через `||` и `|`.
 - Строгая валидация: если SQL не модифицируем — error.
+- Реализовано: `ISqlModifier`/`SqlModifierService`, замена `"LineFile"` на custom `expr1 || '|' || ...`, COALESCE+escape, интеграция в RunService.
 
 ## Итерация 6 — DB2 интеграция (твой код)
 

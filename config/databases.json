@@ -1,0 +1,4 @@
+[
+  { "id": "db-prod", "displayName": "Prod", "server": "db2-prod.company.local", "database": "DBPROD" },
+  { "id": "db-test", "displayName": "Test", "server": "db2-test.company.local", "database": "DBTEST" }
+]

@@ -1,10 +1,419 @@
-/* PrimeNG Theme */
-@import "primeng/resources/themes/lara-light-blue/theme.css";
-@import "primeng/resources/primeng.css";
 @import "primeicons/primeicons.css";
 
-/* Global styles */
+:root {
+  --spotify-black: #121212;
+  --spotify-dark: #181818;
+  --spotify-gray: #282828;
+  --spotify-light-gray: #3e3e3e;
+  --spotify-green: #1DB954;
+  --spotify-green-hover: #1ed760;
+  --spotify-text: #ffffff;
+  --spotify-text-secondary: #b3b3b3;
+  --spotify-border: #2a2a2a;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  height: 100%;
+  font-size: 16px;
+}
+
 body {
   margin: 0;
-  font-family: var(--font-family);
+  padding: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background: var(--spotify-black);
+  color: var(--spotify-text);
+  line-height: 1.6;
+  height: 100%;
+  overflow-x: hidden;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+::-webkit-scrollbar {
+  width: 12px;
+  height: 12px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--spotify-black);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--spotify-gray);
+  border-radius: 6px;
+  transition: background 0.2s ease;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--spotify-light-gray);
+}
+
+*:focus-visible {
+  outline: 2px solid var(--spotify-green);
+  outline-offset: 2px;
+}
+
+::selection {
+  background: var(--spotify-green);
+  color: var(--spotify-black);
+}
+
+h1, h2, h3, h4, h5, h6 {
+  margin: 0;
+  font-weight: 700;
+  line-height: 1.2;
+  color: var(--spotify-text);
+  letter-spacing: -0.5px;
+}
+
+p {
+  margin: 0;
+}
+
+button {
+  transition: all 0.2s ease;
+}
+
+input, textarea, select {
+  transition: all 0.2s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.fade-in {
+  animation: fadeIn 0.3s ease-out;
+}
+
+.slide-in {
+  animation: slideIn 0.3s ease-out;
+}
+
+::ng-deep {
+  .p-button {
+    background: var(--spotify-green);
+    border: none;
+    color: var(--spotify-black);
+    font-weight: 700;
+    transition: all 0.2s ease;
+
+    &:hover:not(:disabled) {
+      background: var(--spotify-green-hover);
+    }
+
+    &.p-button-secondary {
+      background: transparent;
+      border: 1px solid var(--spotify-border);
+      color: var(--spotify-text);
+
+      &:hover:not(:disabled) {
+        background: var(--spotify-gray);
+        border-color: var(--spotify-light-gray);
+      }
+    }
+  }
+
+  .p-checkbox {
+    .p-checkbox-box {
+      background: var(--spotify-gray);
+      border: 1px solid var(--spotify-border);
+      border-radius: 4px;
+
+      &.p-highlight {
+        background: var(--spotify-green);
+        border-color: var(--spotify-green);
+      }
+
+      &:hover {
+        border-color: var(--spotify-light-gray);
+      }
+    }
+  }
+
+  .p-dropdown,
+  .p-multiselect,
+  .p-select {
+    background: var(--spotify-gray) !important;
+    border: 1px solid var(--spotify-border) !important;
+    color: var(--spotify-text) !important;
+    border-radius: 8px !important;
+
+    .p-dropdown-label,
+    .p-multiselect-label,
+    .p-select-label {
+      color: var(--spotify-text) !important;
+      background: transparent !important;
+    }
+
+    .p-dropdown-trigger,
+    .p-multiselect-trigger,
+    .p-select-trigger {
+      color: var(--spotify-text) !important;
+      background: transparent !important;
+    }
+
+    &:hover:not(.p-disabled) {
+      border-color: var(--spotify-light-gray) !important;
+      background: var(--spotify-light-gray) !important;
+    }
+
+    &.p-focus {
+      border-color: var(--spotify-green) !important;
+      box-shadow: 0 0 0 2px rgba(29, 185, 84, 0.2) !important;
+    }
+  }
+
+  .p-dropdown-panel,
+  .p-multiselect-panel,
+  .p-select-panel {
+    background: var(--spotify-dark) !important;
+    border: 1px solid var(--spotify-border) !important;
+    border-radius: 8px !important;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6) !important;
+    margin-top: 4px !important;
+    padding: 0 !important;
+
+    .p-dropdown-items-wrapper,
+    .p-multiselect-items-wrapper,
+    .p-select-items-wrapper {
+      background: var(--spotify-dark) !important;
+      padding: 0.5rem 0 !important;
+
+      .p-dropdown-item,
+      .p-multiselect-item,
+      .p-select-item {
+        color: var(--spotify-text) !important;
+        background: var(--spotify-dark) !important;
+        border-radius: 4px !important;
+        margin: 2px 0.5rem !important;
+        padding: 0.75rem 1rem !important;
+        transition: all 0.2s ease !important;
+
+        &:hover {
+          background: var(--spotify-gray) !important;
+          color: var(--spotify-text) !important;
+        }
+
+        &.p-highlight,
+        &.p-focus {
+          background: var(--spotify-green) !important;
+          color: var(--spotify-black) !important;
+        }
+      }
+
+      .p-dropdown-empty-message,
+      .p-multiselect-empty-message,
+      .p-select-empty-message {
+        color: var(--spotify-text-secondary) !important;
+        padding: 0.75rem 1rem !important;
+        background: var(--spotify-dark) !important;
+      }
+    }
+
+    .p-multiselect-header {
+      background: var(--spotify-dark);
+      border-bottom: 1px solid var(--spotify-border);
+      padding: 0.75rem;
+
+      .p-multiselect-filter-container {
+        .p-inputtext {
+          background: var(--spotify-gray);
+          border: 1px solid var(--spotify-border);
+          color: var(--spotify-text);
+          border-radius: 8px;
+
+          &:focus {
+            border-color: var(--spotify-green);
+            box-shadow: 0 0 0 2px rgba(29, 185, 84, 0.2);
+          }
+        }
+      }
+    }
+  }
+
+  .p-card {
+    background: var(--spotify-dark);
+    border: 1px solid var(--spotify-border);
+    border-radius: 16px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+  }
+
+  .p-tabs,
+  p-tabs {
+    background: var(--spotify-black) !important;
+    border: none !important;
+    box-shadow: none !important;
+
+    * {
+      box-sizing: border-box;
+    }
+
+    .p-tabs-list,
+    [role="tablist"] {
+      background: var(--spotify-dark) !important;
+      border-bottom: 1px solid var(--spotify-border) !important;
+      border-top: none !important;
+      border-left: none !important;
+      border-right: none !important;
+      padding: 0 1rem !important;
+      display: flex !important;
+      gap: 0 !important;
+      margin: 0 !important;
+      list-style: none !important;
+      box-shadow: none !important;
+    }
+
+    .p-tabs-tab,
+    [role="tab"] {
+      padding: 0 !important;
+      margin: 0 !important;
+      margin-right: 0.5rem !important;
+      border: none !important;
+      background: transparent !important;
+      outline: none !important;
+      box-shadow: none !important;
+
+      .p-tabs-tab-button,
+      button {
+        padding: 1rem 1.5rem !important;
+        border-radius: 0 !important;
+        transition: all 0.2s ease !important;
+        font-weight: 600 !important;
+        font-size: 0.875rem !important;
+        border: none !important;
+        border-bottom: 2px solid transparent !important;
+        color: var(--spotify-text-secondary) !important;
+        background: transparent !important;
+        cursor: pointer !important;
+        position: relative !important;
+        outline: none !important;
+        box-shadow: none !important;
+        margin: 0 !important;
+
+        &:hover:not(:disabled) {
+          color: var(--spotify-text) !important;
+          background: transparent !important;
+          border: none !important;
+          border-bottom: 2px solid transparent !important;
+          box-shadow: none !important;
+        }
+
+        &:focus,
+        &:focus-visible {
+          outline: 2px solid var(--spotify-green) !important;
+          outline-offset: -2px !important;
+          border: none !important;
+          box-shadow: none !important;
+        }
+      }
+
+      &.p-tabs-tab-selected,
+      &[aria-selected="true"] {
+        .p-tabs-tab-button,
+        button {
+          color: var(--spotify-text) !important;
+          border: none !important;
+          border-bottom: 2px solid var(--spotify-green) !important;
+          background: transparent !important;
+          box-shadow: none !important;
+        }
+      }
+    }
+
+    .p-tabs-panels,
+    [role="tabpanel"] {
+      background: var(--spotify-black) !important;
+      border: none !important;
+      padding: 0 !important;
+      box-shadow: none !important;
+    }
+
+    .p-tabs-panel {
+      background: var(--spotify-black) !important;
+      border: none !important;
+      box-shadow: none !important;
+    }
+  }
+
+  .p-inputtext {
+    background: var(--spotify-gray);
+    border: 1px solid var(--spotify-border);
+    color: var(--spotify-text);
+    border-radius: 8px;
+
+    &:hover:not(:disabled) {
+      border-color: var(--spotify-light-gray);
+      background: var(--spotify-light-gray);
+    }
+
+    &:focus {
+      border-color: var(--spotify-green);
+      box-shadow: 0 0 0 2px rgba(29, 185, 84, 0.2);
+      background: var(--spotify-light-gray);
+    }
+
+    &::placeholder {
+      color: var(--spotify-text-secondary);
+    }
+  }
+
+  .p-password {
+    .p-password-input {
+      background: var(--spotify-gray);
+      border: 1px solid var(--spotify-border);
+      color: var(--spotify-text);
+      border-radius: 8px;
+
+      &:hover:not(:disabled) {
+        border-color: var(--spotify-light-gray);
+        background: var(--spotify-light-gray);
+      }
+
+      &:focus {
+        border-color: var(--spotify-green);
+        box-shadow: 0 0 0 2px rgba(29, 185, 84, 0.2);
+        background: var(--spotify-light-gray);
+      }
+
+      &::placeholder {
+        color: var(--spotify-text-secondary);
+      }
+    }
+
+    .p-password-toggle {
+      color: var(--spotify-text-secondary);
+
+      &:hover {
+        color: var(--spotify-text);
+      }
+    }
+  }
 }

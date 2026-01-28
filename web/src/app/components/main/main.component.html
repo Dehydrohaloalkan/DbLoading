@@ -1,0 +1,116 @@
+<div class="main-container">
+  <div class="top-bar">
+    <div class="top-bar-left">
+      <h1>DbLoading</h1>
+    </div>
+    <div class="top-bar-right">
+      @if (currentUser(); as user) {
+        <span class="user-info">{{ user.login }} | {{ user.managerId }} | {{ user.streamId }} | {{ user.databaseId }}</span>
+      }
+      <p-button label="Выйти" severity="secondary" size="small" (onClick)="logout()" />
+    </div>
+  </div>
+
+  <div class="main-content">
+    <div class="left-column">
+      <div class="actions-bar">
+        <p-button label="Запустить все группы" (onClick)="runAllGroups()" />
+      </div>
+
+      <p-tabs [value]="activeTab" (valueChange)="activeTab = $event">
+        <p-tablist>
+          @for (group of groups(); track group.id) {
+            @let groupStatus = getGroupStatusForLastRun(group.id);
+            <p-tab [value]="group.id">
+              <span>{{ group.displayName }}</span>
+              @if (groupStatus) {
+                <i [class]="'pi ' + getStatusIcon(groupStatus)" [ngClass]="getStatusClass(groupStatus)"></i>
+              }
+            </p-tab>
+          }
+        </p-tablist>
+        <p-tabpanels>
+          @for (group of groups(); track group.id) {
+            <p-tabpanel [value]="group.id">
+              <div class="scripts-list">
+                @for (script of group.scripts; track script.id) {
+                  @let scriptStatus = getScriptStatusForLastRun(group.id, script.id);
+                  <div class="script-item" [class.selected]="selectedScript()?.id === script.id">
+                    <div class="script-header" (click)="onScriptSelect(script)">
+                      <p-checkbox
+                        [binary]="true"
+                        [ngModel]="isScriptEnabled(script.id)"
+                        (ngModelChange)="onScriptToggle(script, $event)"
+                        (click)="$event.stopPropagation()"
+                      />
+                      <span class="script-name">{{ script.displayName }}</span>
+                      <span class="script-lane">Lane {{ script.executionLane }}</span>
+                      @if (scriptStatus) {
+                        <span class="script-status" [ngClass]="getStatusClass(scriptStatus)">
+                          <i [class]="'pi ' + getStatusIcon(scriptStatus)"></i>
+                          <span>{{ scriptStatus }}</span>
+                        </span>
+                      }
+                    </div>
+                  </div>
+                }
+              </div>
+
+              <div class="group-actions">
+                <p-button
+                  label="Запустить группу"
+                  (onClick)="runGroup(group.id)"
+                  [disabled]="getEnabledScriptsCount(group.id) === 0"
+                />
+              </div>
+            </p-tabpanel>
+          }
+        </p-tabpanels>
+      </p-tabs>
+    </div>
+
+    <div class="right-column">
+      @if (selectedScript()) {
+        <div class="script-settings">
+          <h3>{{ selectedScript()!.displayName }}</h3>
+
+          <div class="settings-section">
+            <label>Режим экспорта</label>
+            <div class="mode-selector">
+              <p-button
+                label="Default (LineFile)"
+                [severity]="getScriptExportMode(selectedScript()!.id) === 'Default' ? 'primary' : 'secondary'"
+                (onClick)="onExportModeChange('Default')"
+              />
+              <p-button
+                label="Custom columns"
+                [severity]="getScriptExportMode(selectedScript()!.id) === 'CustomColumns' ? 'primary' : 'secondary'"
+                (onClick)="onExportModeChange('CustomColumns')"
+              />
+            </div>
+          </div>
+
+          @if (getScriptExportMode(selectedScript()!.id) === 'CustomColumns' && selectedProfile()) {
+            <div class="settings-section">
+              <label>Выберите колонки</label>
+              <p-multiSelect
+                [options]="selectedProfile()!.items"
+                optionLabel="label"
+                optionValue="id"
+                [ngModel]="selectedColumnItems()"
+                (ngModelChange)="onColumnItemsChange($event)"
+                placeholder="Выберите колонки"
+                [filter]="true"
+                styleClass="full-width"
+              />
+            </div>
+          }
+        </div>
+      } @else {
+        <div class="no-selection">
+          <p>Выберите скрипт для настройки</p>
+        </div>
+      }
+    </div>
+  </div>
+</div>

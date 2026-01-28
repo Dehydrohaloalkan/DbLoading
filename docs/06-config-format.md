@@ -16,6 +16,7 @@
 {
   "output": {
     "rootPath": "D:/DbLoading/output",
+    "scriptsRoot": "scripts",
     "encoding": "utf-8",
     "maxFileBytes": 10485760,
     "cleanupPolicy": "BeforeRunIfPreviousSucceeded",
@@ -37,6 +38,7 @@
 
 Примечания:
 
+- `scriptsRoot` — папка с SQL-файлами; путь относительно родителя `config/` или абсолютный.
 - `maxFileBytes` по умолчанию = `10 * 1024 * 1024`.
 - `cleanupPolicy` варианты:
   - `BeforeRunAlways`

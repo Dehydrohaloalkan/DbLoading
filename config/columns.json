@@ -1,0 +1,173 @@
+{
+  "profiles": [
+    {
+      "id": "orders_cols",
+      "items": [
+        { "id": "order_id", "label": "OrderId", "expression": "t.ORDER_ID" },
+        { "id": "customer", "label": "Customer", "expression": "RTRIM(t.CUSTOMER_NAME)" },
+        { "id": "amount", "label": "Amount", "expression": "DECIMAL(t.AMOUNT, 18, 2)" }
+      ]
+    },
+    {
+      "id": "invoices_cols",
+      "items": [
+        { "id": "invoice_id", "label": "InvoiceId", "expression": "t.INVOICE_ID" },
+        { "id": "invoice_date", "label": "InvoiceDate", "expression": "t.INVOICE_DATE" },
+        { "id": "total", "label": "Total", "expression": "DECIMAL(t.TOTAL, 18, 2)" }
+      ]
+    },
+    {
+      "id": "payments_cols",
+      "items": [
+        { "id": "payment_id", "label": "PaymentId", "expression": "t.PAYMENT_ID" },
+        { "id": "payment_date", "label": "PaymentDate", "expression": "t.PAYMENT_DATE" },
+        { "id": "amount", "label": "Amount", "expression": "DECIMAL(t.AMOUNT, 18, 2)" }
+      ]
+    },
+    {
+      "id": "revenue_cols",
+      "items": [
+        { "id": "period", "label": "Period", "expression": "t.PERIOD" },
+        { "id": "revenue", "label": "Revenue", "expression": "DECIMAL(t.REVENUE, 18, 2)" },
+        { "id": "currency", "label": "Currency", "expression": "RTRIM(t.CURRENCY)" }
+      ]
+    },
+    {
+      "id": "stock_cols",
+      "items": [
+        { "id": "product_id", "label": "ProductId", "expression": "t.PRODUCT_ID" },
+        { "id": "quantity", "label": "Quantity", "expression": "t.QUANTITY" },
+        { "id": "warehouse", "label": "Warehouse", "expression": "RTRIM(t.WAREHOUSE)" }
+      ]
+    },
+    {
+      "id": "movements_cols",
+      "items": [
+        { "id": "movement_id", "label": "MovementId", "expression": "t.MOVEMENT_ID" },
+        { "id": "movement_date", "label": "MovementDate", "expression": "t.MOVEMENT_DATE" },
+        { "id": "quantity", "label": "Quantity", "expression": "t.QUANTITY" }
+      ]
+    },
+    {
+      "id": "warehouses_cols",
+      "items": [
+        { "id": "warehouse_id", "label": "WarehouseId", "expression": "t.WAREHOUSE_ID" },
+        { "id": "name", "label": "Name", "expression": "RTRIM(t.NAME)" },
+        { "id": "location", "label": "Location", "expression": "RTRIM(t.LOCATION)" }
+      ]
+    },
+    {
+      "id": "transfers_cols",
+      "items": [
+        { "id": "transfer_id", "label": "TransferId", "expression": "t.TRANSFER_ID" },
+        { "id": "from_warehouse", "label": "FromWarehouse", "expression": "RTRIM(t.FROM_WAREHOUSE)" },
+        { "id": "to_warehouse", "label": "ToWarehouse", "expression": "RTRIM(t.TO_WAREHOUSE)" }
+      ]
+    },
+    {
+      "id": "customer_list_cols",
+      "items": [
+        { "id": "customer_id", "label": "CustomerId", "expression": "t.CUSTOMER_ID" },
+        { "id": "name", "label": "Name", "expression": "RTRIM(t.NAME)" },
+        { "id": "email", "label": "Email", "expression": "RTRIM(t.EMAIL)" }
+      ]
+    },
+    {
+      "id": "customer_activity_cols",
+      "items": [
+        { "id": "customer_id", "label": "CustomerId", "expression": "t.CUSTOMER_ID" },
+        { "id": "activity_date", "label": "ActivityDate", "expression": "t.ACTIVITY_DATE" },
+        { "id": "activity_type", "label": "ActivityType", "expression": "RTRIM(t.ACTIVITY_TYPE)" }
+      ]
+    },
+    {
+      "id": "customer_orders_cols",
+      "items": [
+        { "id": "customer_id", "label": "CustomerId", "expression": "t.CUSTOMER_ID" },
+        { "id": "order_count", "label": "OrderCount", "expression": "t.ORDER_COUNT" },
+        { "id": "total_amount", "label": "TotalAmount", "expression": "DECIMAL(t.TOTAL_AMOUNT, 18, 2)" }
+      ]
+    },
+    {
+      "id": "customer_segments_cols",
+      "items": [
+        { "id": "customer_id", "label": "CustomerId", "expression": "t.CUSTOMER_ID" },
+        { "id": "segment", "label": "Segment", "expression": "RTRIM(t.SEGMENT)" },
+        { "id": "value", "label": "Value", "expression": "DECIMAL(t.VALUE, 18, 2)" }
+      ]
+    },
+    {
+      "id": "product_catalog_cols",
+      "items": [
+        { "id": "product_id", "label": "ProductId", "expression": "t.PRODUCT_ID" },
+        { "id": "name", "label": "Name", "expression": "RTRIM(t.NAME)" },
+        { "id": "description", "label": "Description", "expression": "RTRIM(t.DESCRIPTION)" }
+      ]
+    },
+    {
+      "id": "product_prices_cols",
+      "items": [
+        { "id": "product_id", "label": "ProductId", "expression": "t.PRODUCT_ID" },
+        { "id": "price", "label": "Price", "expression": "DECIMAL(t.PRICE, 18, 2)" },
+        { "id": "currency", "label": "Currency", "expression": "RTRIM(t.CURRENCY)" }
+      ]
+    },
+    {
+      "id": "product_categories_cols",
+      "items": [
+        { "id": "category_id", "label": "CategoryId", "expression": "t.CATEGORY_ID" },
+        { "id": "name", "label": "Name", "expression": "RTRIM(t.NAME)" },
+        { "id": "parent_id", "label": "ParentId", "expression": "t.PARENT_ID" }
+      ]
+    },
+    {
+      "id": "product_sales_cols",
+      "items": [
+        { "id": "product_id", "label": "ProductId", "expression": "t.PRODUCT_ID" },
+        { "id": "sales_date", "label": "SalesDate", "expression": "t.SALES_DATE" },
+        { "id": "quantity", "label": "Quantity", "expression": "t.QUANTITY" }
+      ]
+    },
+    {
+      "id": "daily_summary_cols",
+      "items": [
+        { "id": "date", "label": "Date", "expression": "t.DATE" },
+        { "id": "total_sales", "label": "TotalSales", "expression": "DECIMAL(t.TOTAL_SALES, 18, 2)" },
+        { "id": "order_count", "label": "OrderCount", "expression": "t.ORDER_COUNT" }
+      ]
+    },
+    {
+      "id": "monthly_report_cols",
+      "items": [
+        { "id": "month", "label": "Month", "expression": "t.MONTH" },
+        { "id": "revenue", "label": "Revenue", "expression": "DECIMAL(t.REVENUE, 18, 2)" },
+        { "id": "growth", "label": "Growth", "expression": "DECIMAL(t.GROWTH, 18, 2)" }
+      ]
+    },
+    {
+      "id": "performance_cols",
+      "items": [
+        { "id": "metric_id", "label": "MetricId", "expression": "t.METRIC_ID" },
+        { "id": "metric_name", "label": "MetricName", "expression": "RTRIM(t.METRIC_NAME)" },
+        { "id": "value", "label": "Value", "expression": "DECIMAL(t.VALUE, 18, 2)" }
+      ]
+    },
+    {
+      "id": "analytics_cols",
+      "items": [
+        { "id": "event_id", "label": "EventId", "expression": "t.EVENT_ID" },
+        { "id": "event_date", "label": "EventDate", "expression": "t.EVENT_DATE" },
+        { "id": "event_type", "label": "EventType", "expression": "RTRIM(t.EVENT_TYPE)" }
+      ]
+    }
+  ],
+  "serialization": {
+    "delimiter": "|",
+    "escape": {
+      "backslash": "\\\\",
+      "pipe": "\\|",
+      "cr": "\\\\r",
+      "lf": "\\\\n"
+    }
+  }
+}

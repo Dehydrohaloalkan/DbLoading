@@ -3,6 +3,9 @@
   <ItemGroup>
     <ProjectReference Include="..\DbLoading.Domain\DbLoading.Domain.csproj" />
     <ProjectReference Include="..\DbLoading.Application\DbLoading.Application.csproj" />
+    <ProjectReference Include="..\DbLoading.Auth\DbLoading.Auth.csproj" />
+    <ProjectReference Include="..\DbLoading.Database\DbLoading.Database.csproj" />
+    <ProjectReference Include="..\DbLoading.Database.Mock\DbLoading.Database.Mock.csproj" />
   </ItemGroup>
 
   <ItemGroup>

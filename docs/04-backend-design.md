@@ -4,16 +4,34 @@
 
 Рекомендуемая структура (один backend‑сервис, без микросервисов):
 
+### Основные проекты
+
 - `src/DbLoading.Server` — ASP.NET Core host (Controllers, DI, SignalR)
 - `src/DbLoading.Application` — use‑cases, оркестрация запусков, планировщик по lanes
 - `src/DbLoading.Domain` — модели, статусы, события, observer контракты
-- `src/DbLoading.Infrastructure` — DB2 provider (пока заглушка), файловая система, токены, stream (заглушка)
+- `src/DbLoading.Infrastructure` — файловая система, stream (заглушка), адаптеры
+
+### Выделенные библиотеки (для переиспользования в других проектах)
+
+- `src/DbLoading.Database` — абстракция подключения к БД с минимальными зависимостями:
+  - `IDbConnection` — интерфейс с методами `ConnectAsync()`, `ExecuteAsync(sql)`
+  - `IDbConnectionFactory` — фабрика подключений
+  - `DbConnectionException` — исключение подключения
+  
+- `src/DbLoading.Database.Mock` — mock реализация для разработки/тестирования:
+  - `MockDbConnection` / `MockDbConnectionFactory`
+  - Extension method `AddMockDatabase()` для DI
+  
+- `src/DbLoading.Auth` — JWT аутентификация с привязкой к БД:
+  - `IAuthService`, `ITokenService`, `ISessionService`
+  - Авторизация считается пройденной при успешном `ConnectAsync()`
+  - Extension method `AddDbLoadingAuth()` для DI
 
 ## 4.2. Модель выполнения: Run → Lanes → Scripts → Variants
 
 ### Run
 
-Run — атомарный “сеанс” выгрузки:
+Run — атомарный "сеанс" выгрузки:
 
 - `runId` (GUID/ULID)
 - пользовательский контекст (login, db, manager, stream)
@@ -28,24 +46,48 @@ Run — атомарный “сеанс” выгрузки:
 - Внутри lane задачи выполняются **строго последовательно**.
 - Lanes работают параллельно между собой.
 
-## 4.3. Выполнение DB2 (пока заглушка)
+## 4.3. Подключение к БД (DbLoading.Database)
 
-### Контракт
+### Контракт (выделенная библиотека)
 
-Интерфейс уровня Application/Domain:
+Интерфейсы из `DbLoading.Database`:
 
-- `IDb2SessionFactory` — создаёт сессию по DB‑контексту (server, database, uid, pwd)
-- `IDb2Session` — выполняет SQL и возвращает `IAsyncEnumerable<string>` строк результата
+```csharp
+public interface IDbConnection : IAsyncDisposable
+{
+    bool IsConnected { get; }
+    Task ConnectAsync(CancellationToken cancellationToken = default);
+    IAsyncEnumerable<string> ExecuteAsync(string sql, CancellationToken cancellationToken = default);
+}
 
-На старте можно реализовать заглушку, которая возвращает фиксированный набор строк, чтобы фронт/пайплайн нарезки можно было развивать независимо от DB2.
+public interface IDbConnectionFactory
+{
+    Task<IDbConnection> CreateAsync(
+        string server, string database, string uid, string pwd,
+        CancellationToken cancellationToken = default);
+}
+```
+
+### Mock реализация (DbLoading.Database.Mock)
+
+Для разработки без реальной БД:
+
+```csharp
+builder.Services.AddMockDatabase();
+```
 
 ### Хранение DB‑учётки
 
 По требованию: DB‑учётные данные хранятся **только в памяти** на сервере:
 
-- При логине backend проверяет соединение и создаёт “session record” (в памяти), привязанный к userId + refresh token sessionId.
-- Доступ к выполнению SQL возможен только при наличии валидной сессии.
-- При рестарте backend все сессии теряются (пользователь логинится заново).
+- При логине backend проверяет соединение через `ConnectAsync()` и создаёт "session record"
+- **Авторизация считается успешной только при успешном подключении к БД**
+- Доступ к выполнению SQL возможен только при наличии валидной сессии
+- При рестарте backend все сессии теряются (пользователь логинится заново)
+
+### Устаревшие интерфейсы (deprecated)
+
+Для обратной совместимости сохранены `IDb2Session`/`IDb2SessionFactory`, но помечены как `[Obsolete]`. Новый код должен использовать `IDbConnection`/`IDbConnectionFactory`.
 
 ## 4.4. Модификация SQL (замена SELECT "LineFile")
 
@@ -63,7 +105,7 @@ Run — атомарный “сеанс” выгрузки:
    - DB2 конкатенация: `expr1 || '|' || expr2 || '|' || expr3 ...`
 4. При Custom режиме обязательно применить экранирование/NULL‑handling (см. ниже).
 
-Если SQL не соответствует шаблону — вернуть ошибку “script is not modifiable” и пометить Script как `Failed` (или, альтернативно, выполнить Default — решение зафиксировать в конфиге; по умолчанию безопаснее **ошибка**, чтобы не выгружать “не то”).
+Если SQL не соответствует шаблону — вернуть ошибку "script is not modifiable" и пометить Script как `Failed` (или, альтернативно, выполнить Default — решение зафиксировать в конфиге; по умолчанию безопаснее **ошибка**, чтобы не выгружать "не то").
 
 ## 4.5. Формирование строки при Custom columns
 
@@ -86,7 +128,7 @@ Run — атомарный “сеанс” выгрузки:
 - `\r` → `\\r`
 - `\n` → `\\n`
 
-Важно: даже если “скорее всего их не будет”, фиксируем правила однозначно, чтобы downstream обработка была детерминированной.
+Важно: даже если "скорее всего их не будет", фиксируем правила однозначно, чтобы downstream обработка была детерминированной.
 
 Реализация может быть:
 
@@ -126,7 +168,7 @@ Run — атомарный “сеанс” выгрузки:
   - worker проверяет cancellation token между чтением строк/пакетами
   - статус `Cancelled`
 
-Повторный запуск — новый `runId`, результаты предыдущего запуска очищаются по политике “перед стартом”.
+Повторный запуск — новый `runId`, результаты предыдущего запуска очищаются по политике "перед стартом".
 
 ## 4.8. Observer hooks (точки расширения)
 
@@ -136,4 +178,3 @@ Observer реализуется как publish/subscribe внутри проце
 - можно регистрировать несколько обработчиков через DI
 
 Подробный список событий — `10-observer-events.md`.
-

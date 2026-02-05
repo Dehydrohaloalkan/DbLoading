@@ -7,13 +7,39 @@
 - Refresh хранится в **HttpOnly cookie**
 - DB2 пароль не попадает в JWT/логи, хранится только в памяти backend
 - Возможность **отзывать** токены для конкретного пользователя (logout/revoke)
+- **Авторизация через подключение к БД** — логин успешен только при успешном `ConnectAsync()`
 
-## 8.2. Поток логина
+## 8.2. Библиотека DbLoading.Auth
+
+Аутентификация вынесена в отдельную библиотеку `DbLoading.Auth` для переиспользования в других проектах.
+
+### Подключение
+
+```csharp
+// Program.cs
+builder.Services.AddMockDatabase(); // или реальная реализация IDbConnectionFactory
+builder.Services.AddDbLoadingAuth(builder.Configuration, userIdGenerator);
+```
+
+### Настройка (appsettings.json)
+
+```json
+{
+  "Jwt": {
+    "SecretKey": "your-secret-key-at-least-32-chars",
+    "AccessTokenLifetimeMinutes": 20,
+    "RefreshTokenLifetimeHours": 4
+  }
+}
+```
+
+## 8.3. Поток логина
 
 1. Frontend отправляет `POST /api/auth/login` с DB2 uid/pwd + выбор DB + manager/stream.
 2. Backend:
    - валидирует входные данные
-   - пытается подключиться к DB2 (или заглушка)
+   - создаёт `IDbConnection` через `IDbConnectionFactory`
+   - вызывает `ConnectAsync()` — **это ключевая проверка авторизации**
    - при успехе создаёт **in-memory session** для пользователя
 3. Backend возвращает:
    - `accessToken` в body

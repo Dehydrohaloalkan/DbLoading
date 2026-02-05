@@ -1,19 +1,22 @@
-using System.Runtime.CompilerServices;
 using DbLoading.Application.Db2;
+using DbLoading.Database;
 
 namespace DbLoading.Infrastructure.Db2;
 
+[Obsolete("Use MockDbConnection from DbLoading.Database.Mock instead")]
 public sealed class Db2SessionStub : IDb2Session
 {
-    public async IAsyncEnumerable<string> ExecuteQueryAsync(string sql, [EnumeratorCancellation] CancellationToken cancellationToken = default)
+    private readonly IDbConnection _connection;
+
+    public Db2SessionStub(IDbConnection connection)
     {
-        await Task.Yield();
-        for (var i = 0; i < 5; i++)
-        {
-            cancellationToken.ThrowIfCancellationRequested();
-            yield return $"stub_line_{i + 1}";
-        }
+        _connection = connection;
     }
 
-    public ValueTask DisposeAsync() => ValueTask.CompletedTask;
+    public IAsyncEnumerable<string> ExecuteQueryAsync(string sql, CancellationToken cancellationToken = default)
+    {
+        return _connection.ExecuteAsync(sql, cancellationToken);
+    }
+
+    public ValueTask DisposeAsync() => _connection.DisposeAsync();
 }

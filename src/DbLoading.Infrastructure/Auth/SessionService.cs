@@ -1,71 +1,67 @@
 using DbLoading.Application.Auth;
 using DbLoading.Domain.Auth;
+using AuthLib = DbLoading.Auth;
 
 namespace DbLoading.Infrastructure.Auth;
 
 public class SessionService : ISessionService
 {
-    private readonly Dictionary<string, UserSession> _sessions = new();
-    private readonly Dictionary<string, int> _sessionVersions = new();
-    private readonly object _lock = new();
+    private readonly AuthLib.ISessionService _authSessionService;
+
+    public SessionService(AuthLib.ISessionService authSessionService)
+    {
+        _authSessionService = authSessionService;
+    }
 
     public UserSession CreateSession(string login, string dbPassword, string databaseId, string managerId, string streamId)
     {
-        var userId = $"{login}@{databaseId}#{managerId}@{streamId}";
-
-        lock (_lock)
+        var customClaims = new Dictionary<string, string>
         {
-            if (!_sessionVersions.ContainsKey(userId))
-            {
-                _sessionVersions[userId] = 0;
-            }
+            ["databaseId"] = databaseId,
+            ["managerId"] = managerId,
+            ["streamId"] = streamId
+        };
 
-            var session = new UserSession
-            {
-                UserId = userId,
-                Login = login,
-                DatabaseId = databaseId,
-                ManagerId = managerId,
-                StreamId = streamId,
-                DbPassword = dbPassword,
-                SessionVersion = _sessionVersions[userId],
-                CreatedAt = DateTime.UtcNow
-            };
-
-            _sessions[userId] = session;
-            return session;
-        }
+        var authSession = _authSessionService.CreateSession(login, dbPassword, customClaims);
+        
+        return new UserSession
+        {
+            UserId = authSession.UserId,
+            Login = authSession.Login,
+            DatabaseId = databaseId,
+            ManagerId = managerId,
+            StreamId = streamId,
+            DbPassword = authSession.DbPassword,
+            SessionVersion = authSession.SessionVersion,
+            CreatedAt = authSession.CreatedAt
+        };
     }
 
     public UserSession? GetSession(string userId)
     {
-        lock (_lock)
+        var authSession = _authSessionService.GetSession(userId);
+        if (authSession == null) return null;
+
+        return new UserSession
         {
-            return _sessions.TryGetValue(userId, out var session) ? session : null;
-        }
+            UserId = authSession.UserId,
+            Login = authSession.Login,
+            DatabaseId = authSession.CustomClaims.GetValueOrDefault("databaseId") ?? string.Empty,
+            ManagerId = authSession.CustomClaims.GetValueOrDefault("managerId") ?? string.Empty,
+            StreamId = authSession.CustomClaims.GetValueOrDefault("streamId") ?? string.Empty,
+            DbPassword = authSession.DbPassword,
+            SessionVersion = authSession.SessionVersion,
+            CreatedAt = authSession.CreatedAt
+        };
     }
 
     public void RevokeSession(string userId)
     {
-        lock (_lock)
-        {
-            if (_sessionVersions.ContainsKey(userId))
-            {
-                _sessionVersions[userId]++;
-            }
-            _sessions.Remove(userId);
-        }
+        _authSessionService.RevokeSession(userId);
     }
 
     public bool ValidateSessionVersion(string userId, int sessionVersion)
     {
-        lock (_lock)
-        {
-            if (!_sessionVersions.TryGetValue(userId, out var currentVersion))
-            {
-                return false;
-            }
-            return currentVersion == sessionVersion;
-        }
+        return _authSessionService.ValidateSessionVersion(userId, sessionVersion);
     }
 }

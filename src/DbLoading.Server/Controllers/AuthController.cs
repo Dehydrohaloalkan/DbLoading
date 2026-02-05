@@ -1,6 +1,8 @@
 using System.Security.Claims;
 using DbLoading.Application.Auth;
+using DbLoading.Database;
 using DbLoading.Domain.Auth;
+using DbLoading.Infrastructure.Config;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -12,20 +14,26 @@ public class AuthController : ControllerBase
 {
     private readonly ITokenService _tokenService;
     private readonly ISessionService _sessionService;
+    private readonly IDbConnectionFactory _dbConnectionFactory;
+    private readonly ConfigReader _configReader;
     private readonly ILogger<AuthController> _logger;
 
     public AuthController(
         ITokenService tokenService,
         ISessionService sessionService,
+        IDbConnectionFactory dbConnectionFactory,
+        ConfigReader configReader,
         ILogger<AuthController> logger)
     {
         _tokenService = tokenService;
         _sessionService = sessionService;
+        _dbConnectionFactory = dbConnectionFactory;
+        _configReader = configReader;
         _logger = logger;
     }
 
     [HttpPost("login")]
-    public IActionResult Login([FromBody] LoginRequest request)
+    public async Task<IActionResult> Login([FromBody] LoginRequest request, CancellationToken cancellationToken)
     {
         if (string.IsNullOrWhiteSpace(request.DbUsername) ||
             string.IsNullOrWhiteSpace(request.DbPassword) ||
@@ -38,14 +46,25 @@ public class AuthController : ControllerBase
 
         try
         {
-            // TODO: Real DB2 connection validation in iteration 6
-            // For now, just validate that credentials are provided
-            var isValid = !string.IsNullOrEmpty(request.DbUsername) && 
-                         !string.IsNullOrEmpty(request.DbPassword);
-            
-            if (!isValid)
+            var databases = _configReader.LoadDatabases();
+            var dbConfig = databases.FirstOrDefault(d => d.Id == request.DatabaseId);
+            if (dbConfig == null)
             {
-                return Unauthorized(new { error = "Invalid credentials" });
+                return BadRequest(new { error = "Invalid database ID" });
+            }
+
+            await using var connection = await _dbConnectionFactory.CreateAsync(
+                dbConfig.Server,
+                dbConfig.Database,
+                request.DbUsername,
+                request.DbPassword,
+                cancellationToken);
+
+            await connection.ConnectAsync(cancellationToken);
+
+            if (!connection.IsConnected)
+            {
+                return Unauthorized(new { error = "Failed to connect to database" });
             }
 
             var session = _sessionService.CreateSession(
@@ -81,6 +100,11 @@ public class AuthController : ControllerBase
                     session.StreamId
                 )
             ));
+        }
+        catch (DbConnectionException ex)
+        {
+            _logger.LogWarning(ex, "Database connection failed for user {Login}", request.DbUsername);
+            return Unauthorized(new { error = "Invalid credentials or database unavailable" });
         }
         catch (Exception ex)
         {

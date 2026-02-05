@@ -16,12 +16,22 @@
   - экран логина (пока без реального логина)
   - экран main с вкладками групп/списком скриптов и правой панелью выбора колонок.
 
-## Итерация 2 — Auth (JWT + refresh cookie) + revocation
+## Итерация 2 — Auth (JWT + refresh cookie) + revocation ✅
 
-- `POST /api/auth/login` (пока с заглушкой проверки)
+- `POST /api/auth/login` (проверка через `IDbConnection.ConnectAsync()`)
 - `POST /api/auth/refresh`
 - `POST /api/auth/logout`
 - Angular interceptor + refresh flow.
+
+### Выделены отдельные библиотеки:
+
+**Backend:**
+- `DbLoading.Database` — интерфейс `IDbConnection` с методами `ConnectAsync()`, `ExecuteAsync()`
+- `DbLoading.Database.Mock` — mock реализация для разработки
+- `DbLoading.Auth` — JWT аутентификация, авторизация через подключение к БД
+
+**Frontend:**
+- `web/src/lib/auth` — сервис аутентификации с минимальными зависимостями
 
 ## Итерация 3 — Run orchestration + статусы
 

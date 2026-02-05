@@ -79,6 +79,37 @@
 
 ## 5.5. Хранение токенов и безопасность на клиенте
 
+### Библиотека аутентификации (web/src/lib/auth)
+
+Вынесена в отдельную библиотеку с минимальными зависимостями:
+
+- `AuthLibService` — основной сервис аутентификации
+- `authLibInterceptor` — HTTP interceptor для токенов
+- `authLibGuard` — guard для защищённых маршрутов
+
+### Подключение
+
+```typescript
+// app.config.ts
+import { AuthLibService } from '../lib/auth';
+
+export const appConfig: ApplicationConfig = {
+  providers: [
+    AuthLibService,
+    {
+      provide: APP_INITIALIZER,
+      useFactory: (authLib: AuthLibService) => () => {
+        authLib.configure({ apiUrl: 'http://localhost:5068/api/auth' });
+      },
+      deps: [AuthLibService],
+      multi: true
+    }
+  ]
+};
+```
+
+### Хранение токенов
+
 - Refresh token хранится только в **HttpOnly cookie** (клиент его не читает).
 - Access token:
   - хранить в памяти приложения (service)
